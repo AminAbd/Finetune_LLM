@@ -60,6 +60,51 @@ The notebook uses the **Lamini Docs** dataset:
 4. **Dataset Tokenization** - Apply tokenization to the entire dataset
 5. **Data Splitting** - Split dataset into train/test sets (90/10 ratio)
 
+## Understanding Labels in the Dataset
+
+### What are Labels?
+
+In this notebook, **labels are identical to input_ids**. This is standard for causal language model training.
+
+### Example
+
+**Original Data:**
+- Question: "How are you?"
+- Answer: "I'm fine, thanks."
+
+**After formatting with prompt template:**
+```
+### Question:
+How are you?
+
+### Answer:
+I'm fine, thanks.
+```
+
+**After tokenization:**
+```python
+# Question + Answer are concatenated and tokenized together
+text = question + answer
+input_ids = [4118, 19782, 27, 187, 2347, 476, 309, 7472, 253, 3045, ...]
+#            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+#            Token IDs representing the entire sequence
+
+# Labels are created as a copy of input_ids
+labels = input_ids  # [4118, 19782, 27, 187, 2347, 476, 309, 7472, ...]
+```
+
+### How the Model Learns
+
+The model learns to predict the next token in the sequence:
+- At position 0: Given token `4118`, predict token `19782`
+- At position 1: Given tokens `4118, 19782`, predict token `27`
+- At position 2: Given tokens `4118, 19782, 27`, predict token `187`
+- And so on...
+
+This is an **autoregressive** approach where the model learns the entire question+answer sequence as one continuous text. During inference, you provide just the question, and the model generates the answer token by token.
+
+**Note:** The current implementation includes question tokens in the training loss. For better instruction tuning, you could mask question tokens so the model only learns from answer tokens, but this notebook uses the simpler approach of learning the entire sequence.
+
 ## Dependencies
 
 - `transformers` - Hugging Face Transformers
