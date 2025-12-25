@@ -1,63 +1,37 @@
-# Finetune LLM
+# Tokenization and Data Preparation for LLM Fine-tuning
 
-A comprehensive guide and implementation for fine-tuning Large Language Models (LLMs) using Hugging Face Transformers and Datasets libraries.
+A Jupyter notebook demonstrating how to tokenize text data and prepare instruction datasets for Large Language Model (LLM) fine-tuning using Hugging Face Transformers and Datasets libraries.
 
 ## Overview
 
-This project demonstrates how to:
-- Load and preprocess instruction datasets from Hugging Face
-- Tokenize text data using transformer tokenizers
-- Prepare datasets for fine-tuning with proper formatting
-- Split datasets into training and testing sets
-- Fine-tune language models on custom datasets
+This notebook covers:
+- Tokenization basics (encoding, decoding, padding, truncation)
+- Loading datasets from Hugging Face Hub
+- Formatting instruction datasets with prompt templates
+- Tokenizing datasets for model training
+- Splitting data into train/test sets
 
-## Features
-
-- **Dataset Loading**: Load datasets directly from Hugging Face Hub (no manual download needed)
-- **Tokenization**: Complete tokenization pipeline with padding and truncation
-- **Data Preprocessing**: Format instruction-following datasets with question-answer pairs
-- **Model Support**: Uses EleutherAI/pythia-70m as the base model (easily customizable)
-- **Multiple Datasets**: Includes examples for various datasets (Lamini docs, Taylor Swift, BTS, etc.)
-
-## Prerequisites
-
-- Python 3.8+
-- Jupyter Notebook or JupyterLab
-- pip or conda package manager
+**Note:** This notebook focuses on data preparation only - it does not include the actual model fine-tuning step.
 
 ## Installation
 
 1. **Clone the repository**
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/AminAbd/Finetune_LLM.git
    cd Finetune_LLM
    ```
 
-2. **Create a virtual environment** (recommended)
+2. **Create and activate virtual environment**
    ```bash
    python -m venv venv
+   venv\Scripts\activate  # Windows
+   # or
+   source venv/bin/activate  # macOS/Linux
    ```
 
-3. **Activate the virtual environment**
-   
-   On Windows:
+3. **Install dependencies**
    ```bash
-   venv\Scripts\activate
-   ```
-   
-   On macOS/Linux:
-   ```bash
-   source venv/bin/activate
-   ```
-
-4. **Install required packages**
-   ```bash
-   pip install transformers datasets pandas torch
-   ```
-   
-   Or install Jupyter for notebook support:
-   ```bash
-   pip install jupyter transformers datasets pandas torch
+   pip install -r requirements.txt
    ```
 
 ## Usage
@@ -66,122 +40,38 @@ This project demonstrates how to:
    ```bash
    jupyter notebook
    ```
-   
-   Or JupyterLab:
-   ```bash
-   jupyter lab
-   ```
 
 2. **Open the notebook**
-   - Open `finetune1.ipynb` in Jupyter
-   - Run the cells sequentially to understand each step
-
-3. **Dataset Selection**
-   - The notebook uses `kotzeje/lamini_docs.jsonl` by default
-   - You can modify the dataset path in the notebook to use different datasets:
-     - `lamini/lamini_docs`
-     - `lamini/taylor_swift`
-     - `lamini/bts`
-     - `lamini/open_llms`
+   - Open `tokenization_data_prep.ipynb`
+   - Run cells sequentially
 
 ## Dataset
 
-The project primarily uses the **Lamini Docs** dataset, which contains:
+The notebook uses the **Lamini Docs** dataset:
 - **1,400 question-answer pairs**
-- Topics related to Lamini's LLM Engine documentation
-- Structured in JSONL format with "question" and "answer" fields
-
-Dataset link: [kotzeje/lamini_docs.jsonl](https://huggingface.co/datasets/kotzeje/lamini_docs.jsonl)
-
-## Project Structure
-
-```
-Finetune_LLM/
-│
-├── finetune1.ipynb          # Main notebook with fine-tuning pipeline
-├── README.md                 # This file
-├── .gitignore               # Git ignore file
-└── venv/                    # Virtual environment (not tracked in git)
-```
-
-## Key Components
-
-### 1. Tokenization
-- Text encoding and decoding
-- Batch tokenization
-- Padding and truncation strategies
-- Left/right truncation options
-
-### 2. Dataset Preparation
-- Loading datasets from Hugging Face
-- Formatting instruction datasets
-- Creating prompt templates
-- Dataset information display
-
-### 3. Data Processing
-- Converting datasets to Hugging Face Dataset format
-- Applying tokenization functions
-- Adding labels for training
-- Train/test splitting
+- Loaded from Hugging Face: `kotzeje/lamini_docs.jsonl`
+- [Dataset link](https://huggingface.co/datasets/kotzeje/lamini_docs.jsonl)
 
 ## Notebook Sections
 
-The notebook is organized into the following sections:
-
-1. **Import Required Libraries** - Import necessary packages
-2. **Initialize Tokenizer** - Load the tokenizer model
-3. **Tokenization Examples** - Demonstrate various tokenization techniques
-4. **Prepare Instruction Dataset** - Load and format the dataset
-5. **Tokenize Dataset** - Apply tokenization to the entire dataset
-6. **Data Splitting** - Split into train/test sets
-
-## Customization
-
-### Change the Base Model
-Modify the tokenizer initialization:
-```python
-tokenizer = AutoTokenizer.from_pretrained("your-model-name")
-```
-
-### Use a Different Dataset
-Change the dataset path:
-```python
-dataset = load_dataset("your-dataset/path")
-```
-
-### Adjust Training Parameters
-Modify the dataset split ratio:
-```python
-split_dataset = tokenized_dataset.train_test_split(test_size=0.1, shuffle=True, seed=123)
-```
+1. **Tokenization Examples** - Encoding, decoding, padding, and truncation techniques
+2. **Dataset Loading** - Load dataset from Hugging Face Hub
+3. **Data Formatting** - Create prompt templates and format question-answer pairs
+4. **Dataset Tokenization** - Apply tokenization to the entire dataset
+5. **Data Splitting** - Split dataset into train/test sets (90/10 ratio)
 
 ## Dependencies
 
-Main dependencies:
-- `transformers` - Hugging Face Transformers library
-- `datasets` - Hugging Face Datasets library
+- `transformers` - Hugging Face Transformers
+- `datasets` - Hugging Face Datasets
 - `pandas` - Data manipulation
-- `torch` - PyTorch (required by transformers)
-- `jupyter` - Jupyter Notebook interface
+- `torch` - PyTorch
+- `jupyter` - Jupyter Notebook
+
+See `requirements.txt` for full list with versions.
 
 ## Resources
 
 - [Hugging Face Transformers Documentation](https://huggingface.co/docs/transformers)
 - [Hugging Face Datasets Documentation](https://huggingface.co/docs/datasets)
-- [Lamini Docs Dataset](https://huggingface.co/datasets/kotzeje/lamini_docs.jsonl)
 - [Pythia Model](https://huggingface.co/EleutherAI/pythia-70m)
-
-## License
-
-This project is open source and available for educational purposes.
-
-## Contributing
-
-Contributions, issues, and feature requests are welcome!
-
-## Acknowledgments
-
-- Hugging Face for the excellent transformers and datasets libraries
-- EleutherAI for the Pythia models
-- Lamini for providing the instruction datasets
-
