@@ -120,3 +120,8 @@ outputs/
 results/
 experiments/
 
+# Model folders
+distilbert-base-uncased-lora-text-classification/
+Finetuned_model/
+llama_files/
+
